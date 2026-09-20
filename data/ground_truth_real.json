@@ -1,0 +1,35 @@
+{
+  "description": "InnoCite 真实论文评估标注数据 — 3 篇真实 arXiv 论文的人工标注（用于验证通篇分析的收益）。匹配键为 arxiv_id。",
+  "version": "1.0",
+  "created": "2026-08-19",
+  "match_key": "arxiv_id",
+  "papers": [
+    {
+      "arxiv_id": "2103.14030",
+      "title": "Swin Transformer: Hierarchical Vision Transformer using Shifted Windows",
+      "problem": "视觉 Transformer 直接应用于图像时，图像分辨率高导致 patch 数量庞大，自注意力计算复杂度随空间尺寸二次增长，且缺乏 CNN 的多尺度层级特征，难以扩展到高分辨率密集预测任务",
+      "method": "提出 Swin Transformer，引入移动窗口（Shifted Windows）自注意力机制，将注意力计算限制在局部窗口内使复杂度与图像尺寸线性相关，并通过窗口移动实现跨窗口信息交互，构建层级式特征表示",
+      "effect": "在 ImageNet-1K 分类达到 87.3% top-1 准确率，在 COCO 目标检测（58.7 box AP）和 ADE20K 语义分割（53.5 mIoU）等密集预测任务上超越主流 CNN 基线，同时保持高效计算",
+      "keywords": ["vision transformer", "shifted windows", "hierarchical", "self-attention", "image classification", "object detection", "semantic segmentation"],
+      "category": "cs.CV"
+    },
+    {
+      "arxiv_id": "1810.04805",
+      "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+      "problem": "传统语言模型预训练受限于单向（left-to-right 或 right-to-left）上下文建模，无法同时利用左右两侧语境，限制了预训练表示在语言理解任务上的表征能力",
+      "method": "提出 BERT（Bidirectional Encoder Representations from Transformers），使用掩码语言模型（Masked Language Model）随机遮盖 15% 的 token 进行预测，并结合下一句预测（Next Sentence Prediction）任务，实现深层双向 Transformer 预训练",
+      "effect": "在 11 项自然语言理解任务上刷新纪录，GLUE 分数达到 80.5%（绝对提升 7.7%），SQuAD v1.1 的 F1 达 93.2%，MultiNLI 准确率 86.7%，无需任务定制架构",
+      "keywords": ["bert", "pre-training", "bidirectional", "masked language model", "next sentence prediction", "transformer", "nlp"],
+      "category": "cs.CL"
+    },
+    {
+      "arxiv_id": "1602.05629",
+      "title": "Communication-Efficient Learning of Deep Networks from Decentralized Data",
+      "problem": "集中式机器学习需要将用户数据收集到中心服务器，存在严重隐私泄露风险；且移动设备网络通信成本高、带宽有限，频繁上传完整梯度不可行",
+      "method": "提出联邦学习（Federated Learning）框架，模型在本地设备上用本地数据训练后仅上传梯度或模型更新到中心服务器聚合，并设计联邦平均（FedAvg）算法显著减少通信轮次，结合概率性随机梯度下降保证收敛",
+      "effect": "在 CIFAR-10 等数据集上，联邦平均算法用 10-100 倍更少的通信轮次达到与集中式训练相当的准确率（CIFAR-10 达到 99% 以上准确率），在非独立同分布（non-IID）数据下仍稳定收敛，保护了用户数据隐私",
+      "keywords": ["federated learning", "federated averaging", "communication efficiency", "privacy", "decentralized", "non-iid"],
+      "category": "cs.LG"
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block title %}综合报告 - InnoCite{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0"><i class="bi bi-file-earmark-text"></i> 综合报告</h1>
+    <button class="btn btn-danger" onclick="exportPDF()" id="exportBtn">
+        <i class="bi bi-file-pdf"></i> 导出 PDF 报告
+    </button>
+</div>
+
+<!-- PDF 导出加载遮罩 -->
+<div id="loadingOverlay" style="display:none;" class="text-center py-5">
+    <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;"></div>
+    <h5 class="text-muted">正在生成报告，请稍候...</h5>
+    <p class="text-muted small">PDF 生成可能需要 10-30 秒</p>
+</div>
+
+<div id="reportContent">
+    <!-- 统计卡片区域（骨架屏 → 真实卡片） -->
+    <div id="statsCards">
+        <div class="skeleton-stats">
+            <div class="skeleton skeleton-stat-card"></div>
+            <div class="skeleton skeleton-stat-card"></div>
+            <div class="skeleton skeleton-stat-card"></div>
+            <div class="skeleton skeleton-stat-card"></div>
+        </div>
+    </div>
+
+    <!-- 关键词曲线 -->
+    <div class="card mb-4">
+        <div class="card-header fw-bold"><i class="bi bi-graph-up"></i> 关键词热度趋势</div>
+        <div class="card-body">
+            <div id="reportTrendChart" style="width: 100%; min-height: 400px;">
+                <div class="skeleton skeleton-chart"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 学科分布 + 创新点汇总 -->
+    <div class="row mb-4">
+        <div class="col-md-5">
+            <div class="card h-100">
+                <div class="card-header fw-bold"><i class="bi bi-pie-chart"></i> 学科分布</div>
+                <div class="card-body">
+                    <div id="reportPieChart" style="min-height: 350px;">
+                        <div class="skeleton skeleton-pie"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="card h-100">
+                <div class="card-header fw-bold"><i class="bi bi-table"></i> 创新点汇总（前10条）</div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped mb-0" id="innoTable">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>标题</th>
+                                    <th>年份</th>
+                                    <th>置信度</th>
+                                    <th>状态</th>
+                                </tr>
+                            </thead>
+                            <tbody id="innoTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 推荐示例 -->
+    <div class="card mb-4">
+        <div class="card-header fw-bold"><i class="bi bi-lightbulb"></i> 跨学科推荐示例</div>
+        <div class="card-body" id="reportRecommendations">
+            <div class="skeleton-rec-card">
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text"></div>
+            </div>
+            <div class="skeleton-rec-card">
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text"></div>
+            </div>
+            <div class="skeleton-rec-card">
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ── 文献综述生成 ── -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header fw-bold">
+                <i class="bi bi-journal-text"></i> 自动文献综述草稿
+            </div>
+            <div class="card-body">
+                <div class="input-group mb-3" style="max-width:500px;">
+                    <input type="text" id="reviewTopic" class="form-control" placeholder="输入综述主题，如 attention mechanism">
+                    <button class="btn btn-primary" onclick="generateReview()">
+                        <i class="bi bi-magic"></i> 生成综述
+                    </button>
+                </div>
+                <div id="reviewOutput" class="p-3 bg-light rounded" style="max-height:600px;overflow-y:auto;font-size:0.9rem;">
+                    <p class="text-muted">输入研究主题关键词，系统将基于论文库中的相关论文自动生成文献综述草稿。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='vendor/plotly/plotly.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/report.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,40 @@
+# ── Python ──
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ── 虚拟环境 ──
+venv/
+.venv/
+
+# ── 环境变量（含 DeepSeek API Key，绝不提交）──
+.env
+
+# ── 运行时数据（数据库 / 日志 / 上传文件）──
+instance/
+
+# ── 测试与缓存 ──
+.pytest_cache/
+.slidep/
+.cache/
+
+# ── 编辑器 / 工具本地配置 ──
+.vscode/
+.idea/
+.claude/
+.workbuddy/
+
+# ── 系统文件 ──
+Thumbs.db
+.DS_Store
+
+# ── 大文件（超 GitHub 单文件 100MB 限制，或可重新下载）──
+# SBERT 模型（90MB，可由 HF 重新下载）
+data/models/
+# 演示视频（171MB，超 GitHub 单一文件硬限制，无法直接推送）
+文件/演示视频.mp4
+*.mp4
+
+# ── 代码包 / 压缩产物 ──
+*.zip

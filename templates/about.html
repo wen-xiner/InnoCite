@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+{% block title %}使用说明 - InnoCite{% endblock %}
+
+{% block content %}
+<h1 class="h3 mb-4"><i class="bi bi-info-circle"></i> 使用说明</h1>
+
+<div class="row">
+    <div class="col-lg-8">
+        <!-- 系统简介 -->
+        <div class="card mb-4">
+            <div class="card-header fw-bold">
+                <i class="bi bi-stars"></i> 系统简介
+            </div>
+            <div class="card-body">
+                <p><strong>InnoCite</strong> 是一个面向研究生和科研人员的学术论文分析平台：</p>
+                <div class="row g-3 mt-2">
+                    <div class="col-sm-6">
+                        <div class="d-flex gap-2">
+                            <span class="text-primary fw-bold fs-5">01</span>
+                            <div><strong>提炼创新点</strong><br><small class="text-muted">自动抽取"问题-方法-效果"三维结构化创新点，支持手动编辑确认</small></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-flex gap-2">
+                            <span class="text-primary fw-bold fs-5">02</span>
+                            <div><strong>追踪研究热点</strong><br><small class="text-muted">关键词热度时序曲线 + 词云，直观展示领域趋势</small></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-flex gap-2">
+                            <span class="text-primary fw-bold fs-5">03</span>
+                            <div><strong>跨学科推荐</strong><br><small class="text-muted">基于向量相似度匹配，发现其他学科可迁移的研究方法</small></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-flex gap-2">
+                            <span class="text-primary fw-bold fs-5">04</span>
+                            <div><strong>报告导出</strong><br><small class="text-muted">一键生成含图表的 PDF 报告，支持 CSV/JSON 数据导出</small></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 功能指南 -->
+        <div class="card mb-4">
+            <div class="card-header fw-bold">
+                <i class="bi bi-book"></i> 功能指南
+            </div>
+            <div class="card-body">
+
+                <h5 class="h6 mt-2"><span class="badge bg-primary me-2">1</span> 登录与安全</h5>
+                <p class="small text-muted ms-4">
+                    系统启动后需要登录才能使用。默认账户 <code>admin / admin123</code>，生产环境请修改密码。<br>
+                    所有请求受 CSRF 保护，文件上传经过魔数签名校验，防止恶意文件注入。<br>
+                    右上角用户菜单可退出登录。支持暗色模式（点击 ☀ 图标切换）。
+                </p>
+
+                <h5 class="h6 mt-3"><span class="badge bg-primary me-2">2</span> 导入论文</h5>
+                <p class="small text-muted ms-4">
+                    支持 <b>5 种</b>导入方式，点击论文库页面的"导入论文"按钮选择：<br>
+                    • <b>arXiv ID</b>：输入论文 ID（如 <code>2101.00123</code>）直接拉取元数据<br>
+                    • <b>关键词搜索</b>：通过 arXiv API 批量搜索导入，支持年份筛选，显示导入进度<br>
+                    • <b>CSV 上传</b>：<a href="/api/csv-template">下载模板</a>填写后批量导入，含文件类型校验<br>
+                    • <b>EndNote (.enw)</b>：支持从知网、万方、PubMed 导出的 EndNote 格式文件<br>
+                    • <b>PDF 上传</b>：自动提取元数据。部署 GROBID（Docker 一行命令）可大幅提升解析精度
+                </p>
+
+                <h5 class="h6 mt-3"><span class="badge bg-primary me-2">3</span> 创新点提炼</h5>
+                <p class="small text-muted ms-4">
+                    系统使用规则引擎从摘要中自动抽取"<b>问题</b>→ <b>方法</b>→ <b>效果</b>"三维创新点。<br>
+                    论文列表中以<b>彩色环形置信度</b>直观展示提取质量（绿≥70% / 黄≥40% / 红&lt;40%）。<br>
+                    点击 ✏ 编辑按钮可手动修改，已确认（✅）的创新点不会被自动覆盖。
+                </p>
+
+                <h5 class="h6 mt-3"><span class="badge bg-primary me-2">4</span> 关键词热度与词云</h5>
+                <p class="small text-muted ms-4">
+                    系统使用 TF-IDF 从所有论文中提取关键词，计算各年份的出现频率。<br>
+                    热度数据<b>自动缓存</b>，论文数量不变时秒级响应。<br>
+                    在趋势页可以选择多个关键词叠加对比热度曲线。右侧<b>词云</b>按热度缩放关键词，点击即选，直观发现热门方向。
+                </p>
+
+                <h5 class="h6 mt-3"><span class="badge bg-primary me-2">5</span> 跨学科推荐</h5>
+                <p class="small text-muted ms-4">
+                    优先使用 SentenceTransformer（all-MiniLM-L6-v2）生成 384 维语义向量，不可用时自动回退到 TF-IDF。<br>
+                    采用<b>批量矩阵运算</b>一次性计算全部候选相似度，比逐对计算快 100 倍以上。<br>
+                    推荐结果自动缓存，附<b>热力色条</b>直观展示相似度高低，并提供方法迁移建议。
+                </p>
+
+                <h5 class="h6 mt-3"><span class="badge bg-primary me-2">6</span> 报告与导出</h5>
+                <p class="small text-muted ms-4">
+                    综合报告页集成统计仪表盘、学科饼图、热度曲线、创新点汇总和推荐示例。<br>
+                    点击"导出 PDF"生成含图表的离线综合报告（需中文字体文件放入 <code>data/</code> 目录）。<br>
+                    支持按条件筛选后导出 <b>CSV</b> 或 <b>JSON</b> 格式的完整数据。
+                </p>
+
+                <h5 class="h6 mt-3"><span class="badge bg-primary me-2">7</span> 论文管理</h5>
+                <p class="small text-muted ms-4">
+                    首页表格支持<b>搜索</b>（标题/作者/摘要）和<b>学科筛选</b>。行 hover 左侧弹出彩色指示条。<br>
+                    每篇论文可查看详情、编辑创新点、删除（同时清理关联数据）。<br>
+                    详情页滚动超过摘要区后顶部滑入<b>快速操作悬浮栏</b>，无需滚回顶部。
+                </p>
+
+                <h5 class="h6 mt-3"><span class="badge bg-primary me-2">8</span> 系统管理</h5>
+                <p class="small text-muted ms-4">
+                    通过 <a href="/apidocs/" target="_blank">Swagger API 文档</a> 可在线测试所有接口。<br>
+                    管理端点支持重建向量嵌入（<code>POST /api/rebuild-embeddings</code>）和重建推荐缓存。<br>
+                    数据库使用 Alembic 管理 schema 迁移：<code>flask db migrate</code> → <code>flask db upgrade</code>。
+                </p>
+
+            </div>
+        </div>
+
+        <!-- 技术栈 -->
+        <div class="card mb-4">
+            <div class="card-header fw-bold">
+                <i class="bi bi-gear"></i> 技术栈
+            </div>
+            <div class="card-body">
+                <div class="row small">
+                    <div class="col-md-6">
+                        <ul class="mb-0">
+                            <li><strong>后端框架</strong>：Flask 3.x（工厂模式 + 蓝图）</li>
+                            <li><strong>数据库</strong>：SQLite + SQLAlchemy ORM + Alembic 迁移</li>
+                            <li><strong>认证安全</strong>：Session + CSRF (Flask-WTF) + 文件魔数校验</li>
+                            <li><strong>PDF 解析</strong>：GROBID（优先）+ pdfplumber（回退）</li>
+                            <li><strong>中文分词</strong>：jieba</li>
+                            <li><strong>关键词</strong>：TF-IDF (sklearn) + 数据库缓存</li>
+                            <li><strong>日志</strong>：RotatingFileHandler（10MB×10 滚动归档）</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="mb-0">
+                            <li><strong>向量化</strong>：SentenceTransformer (all-MiniLM-L6-v2)</li>
+                            <li><strong>推荐</strong>：批量矩阵余弦相似度 (sklearn)</li>
+                            <li><strong>可视化</strong>：Plotly.js（趋势曲线 + 饼图）</li>
+                            <li><strong>PDF 生成</strong>：reportlab + plotly.io.write_image</li>
+                            <li><strong>前端</strong>：Bootstrap 5 + 暗色模式 + 骨架屏</li>
+                            <li><strong>API 文档</strong>：Flasgger / Swagger</li>
+                            <li><strong>部署</strong>：支持 Docker + 环境变量配置</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 右侧 -->
+    <div class="col-lg-4">
+        <div class="card mb-4">
+            <div class="card-header fw-bold">
+                <i class="bi bi-link-45deg"></i> 快速链接
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="/" class="list-group-item list-group-item-action">
+                    <i class="bi bi-journals me-2"></i> 论文库管理
+                </a>
+                <a href="/trends" class="list-group-item list-group-item-action">
+                    <i class="bi bi-graph-up me-2"></i> 热度趋势 + 词云
+                </a>
+                <a href="/recommend" class="list-group-item list-group-item-action">
+                    <i class="bi bi-lightbulb me-2"></i> 跨学科推荐
+                </a>
+                <a href="/report" class="list-group-item list-group-item-action">
+                    <i class="bi bi-file-earmark-text me-2"></i> 综合报告
+                </a>
+                <a href="/timeline" class="list-group-item list-group-item-action">
+                    <i class="bi bi-clock-history me-2"></i> 创新点时间线
+                </a>
+                <a href="/apidocs/" target="_blank" class="list-group-item list-group-item-action">
+                    <i class="bi bi-code-slash me-2"></i> API 文档 (Swagger)
+                </a>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header fw-bold">
+                <i class="bi bi-terminal"></i> 环境变量
+            </div>
+            <div class="card-body small">
+                <dl class="mb-0">
+                    <dt><code>APP_ENV</code></dt>
+                    <dd class="text-muted mb-2">环境：development / testing / production</dd>
+                    <dt><code>ADMIN_USERNAME</code> / <code>ADMIN_PASSWORD</code></dt>
+                    <dd class="text-muted mb-2">管理员账户（默认 admin / admin123）</dd>
+                    <dt><code>GROBID_URL</code></dt>
+                    <dd class="text-muted mb-2">GROBID 服务地址（默认 localhost:8070）</dd>
+                    <dt><code>DATABASE_URL</code></dt>
+                    <dd class="text-muted">数据库连接串（默认 SQLite）</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header fw-bold">
+                <i class="bi bi-info-circle"></i> 注意事项
+            </div>
+            <div class="card-body small text-muted">
+                <ul class="mb-0">
+                    <li>arXiv API 有频率限制，批量搜索会间隔 0.1 秒。</li>
+                    <li>首次启动时 sentence-transformers 会下载约 90MB 模型。</li>
+                    <li>PDF 中文报告需将字体文件放入 <code>data/</code> 目录。</li>
+                    <li>SQLite 适用于单机/小团队使用，高并发请换 PostgreSQL。</li>
+                    <li>数据库迁移文件（<code>migrations/versions/</code>）应提交到 Git。</li>
+                    <li>生产环境请设置 <code>SECRET_KEY</code> 并修改默认管理员密码。</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

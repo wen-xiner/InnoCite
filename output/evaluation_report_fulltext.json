@@ -1,0 +1,865 @@
+{
+  "innovation": {
+    "total": 20,
+    "rouge_l": {
+      "problem": 0.3226,
+      "method": 0.5192,
+      "effect": 0.3734,
+      "avg": 0.4051
+    },
+    "per_paper": [
+      {
+        "paper_id": 1,
+        "arxiv_id": "demo-cv-001",
+        "title": "Adaptive Residual Learning for Robust Visual Recognition",
+        "rouge": {
+          "problem": 0.0,
+          "method": 0.0,
+          "effect": 0.0
+        },
+        "avg_rouge": 0.0
+      },
+      {
+        "paper_id": 21,
+        "arxiv_id": "demo-cv-002",
+        "title": "Multi-Scale Feature Aggregation for Efficient Object Detecti",
+        "rouge": {
+          "problem": 0.4444,
+          "method": 0.6667,
+          "effect": 0.8085
+        },
+        "avg_rouge": 0.6399
+      },
+      {
+        "paper_id": 3,
+        "arxiv_id": "demo-cv-003",
+        "title": "Global-Local Attention Networks for Image Classification",
+        "rouge": {
+          "problem": 0.641,
+          "method": 0.7879,
+          "effect": 0.2895
+        },
+        "avg_rouge": 0.5728
+      },
+      {
+        "paper_id": 4,
+        "arxiv_id": "demo-cv-004",
+        "title": "Progressive Noise Removal for High-Fidelity Image Synthesis",
+        "rouge": {
+          "problem": 0.5455,
+          "method": 0.5432,
+          "effect": 0.6296
+        },
+        "avg_rouge": 0.5728
+      },
+      {
+        "paper_id": 5,
+        "arxiv_id": "demo-cv-005",
+        "title": "Prompt-Guided Universal Segmentation Framework",
+        "rouge": {
+          "problem": 0.5263,
+          "method": 0.8571,
+          "effect": 0.3117
+        },
+        "avg_rouge": 0.565
+      },
+      {
+        "paper_id": 6,
+        "arxiv_id": "demo-cv-006",
+        "title": "Lightweight Cross-Modal Fusion with Shared Semantic Space",
+        "rouge": {
+          "problem": 0.0,
+          "method": 0.0,
+          "effect": 0.0
+        },
+        "avg_rouge": 0.0
+      },
+      {
+        "paper_id": 7,
+        "arxiv_id": "demo-cv-007",
+        "title": "Temporal-Aware Implicit Neural Rendering for Dynamic Scenes",
+        "rouge": {
+          "problem": 0.3864,
+          "method": 0.3636,
+          "effect": 0.5806
+        },
+        "avg_rouge": 0.4435
+      },
+      {
+        "paper_id": 8,
+        "arxiv_id": "demo-cl-001",
+        "title": "Bidirectional Context Encoding for Deep Language Understandi",
+        "rouge": {
+          "problem": 0.3175,
+          "method": 0.6875,
+          "effect": 0.4375
+        },
+        "avg_rouge": 0.4808
+      },
+      {
+        "paper_id": 9,
+        "arxiv_id": "demo-cl-002",
+        "title": "Unsupervised Multi-Task Learning via Scalable Autoregressive",
+        "rouge": {
+          "problem": 0.2895,
+          "method": 0.2892,
+          "effect": 0.4571
+        },
+        "avg_rouge": 0.3453
+      },
+      {
+        "paper_id": 10,
+        "arxiv_id": "demo-cl-003",
+        "title": "Knowledge-Enhanced Retrieval for Open-Domain Question Answer",
+        "rouge": {
+          "problem": 0.2192,
+          "method": 0.8485,
+          "effect": 0.2647
+        },
+        "avg_rouge": 0.4441
+      },
+      {
+        "paper_id": 11,
+        "arxiv_id": "demo-cl-004",
+        "title": "Efficient Model Adaptation with Sparse Low-Rank Updates",
+        "rouge": {
+          "problem": 0.2619,
+          "method": 0.625,
+          "effect": 0.5333
+        },
+        "avg_rouge": 0.4734
+      },
+      {
+        "paper_id": 12,
+        "arxiv_id": "demo-cl-005",
+        "title": "Self-Consistent Stepwise Reasoning for Complex Mathematical ",
+        "rouge": {
+          "problem": 0.2529,
+          "method": 0.7568,
+          "effect": 0.5067
+        },
+        "avg_rouge": 0.5055
+      },
+      {
+        "paper_id": 13,
+        "arxiv_id": "demo-cl-006",
+        "title": "Language-Aware Expert Routing for Multilingual Neural Transl",
+        "rouge": {
+          "problem": 0.4138,
+          "method": 0.4928,
+          "effect": 0.52
+        },
+        "avg_rouge": 0.4755
+      },
+      {
+        "paper_id": 14,
+        "arxiv_id": "demo-cl-007",
+        "title": "Progressive Reasoning Distillation for Compact Language Mode",
+        "rouge": {
+          "problem": 0.5373,
+          "method": 0.7857,
+          "effect": 0.4615
+        },
+        "avg_rouge": 0.5948
+      },
+      {
+        "paper_id": 15,
+        "arxiv_id": "demo-ai-001",
+        "title": "Graph-Structured Message Passing for Molecular Property Pred",
+        "rouge": {
+          "problem": 0.6747,
+          "method": 0.7541,
+          "effect": 0.5507
+        },
+        "avg_rouge": 0.6598
+      },
+      {
+        "paper_id": 16,
+        "arxiv_id": "demo-ai-002",
+        "title": "Novelty-Seeking Agents for Navigation in Unseen Environments",
+        "rouge": {
+          "problem": 0.0294,
+          "method": 0.0,
+          "effect": 0.0339
+        },
+        "avg_rouge": 0.0211
+      },
+      {
+        "paper_id": 17,
+        "arxiv_id": "demo-ai-003",
+        "title": "Differentiable Constraint Learning for Scalable Causal Disco",
+        "rouge": {
+          "problem": 0.3614,
+          "method": 0.6567,
+          "effect": 0.3871
+        },
+        "avg_rouge": 0.4684
+      },
+      {
+        "paper_id": 18,
+        "arxiv_id": "demo-ai-004",
+        "title": "Privacy-Preserving Collaborative Learning with Efficient Gra",
+        "rouge": {
+          "problem": 0.3158,
+          "method": 0.5846,
+          "effect": 0.2414
+        },
+        "avg_rouge": 0.3806
+      },
+      {
+        "paper_id": 19,
+        "arxiv_id": "demo-ai-005",
+        "title": "Self-Supervised Contrastive Pretraining for Time-Series Anom",
+        "rouge": {
+          "problem": 0.2353,
+          "method": 0.6842,
+          "effect": 0.4533
+        },
+        "avg_rouge": 0.4576
+      },
+      {
+        "paper_id": 20,
+        "arxiv_id": "demo-ai-006",
+        "title": "Emergent Communication Protocols for Decentralized Multi-Age",
+        "rouge": {
+          "problem": 0.0,
+          "method": 0.0,
+          "effect": 0.0
+        },
+        "avg_rouge": 0.0
+      }
+    ]
+  },
+  "keywords": {
+    "total": 20,
+    "precision@k": 0.13,
+    "recall@k": 0.13,
+    "f1@k": 0.13,
+    "k": 5,
+    "per_paper": [
+      {
+        "paper_id": 1,
+        "arxiv_id": "demo-cv-001",
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0,
+        "predicted": [
+          "residual",
+          "visual",
+          "recognition",
+          "adaptive",
+          "feature"
+        ],
+        "ground_truth": [
+          "self-gating",
+          "residual learning",
+          "deep network",
+          "visual recognition",
+          "feature recalibration"
+        ]
+      },
+      {
+        "paper_id": 21,
+        "arxiv_id": "demo-cv-002",
+        "precision": 0.2,
+        "recall": 0.2,
+        "f1": 0.2,
+        "predicted": [
+          "scale",
+          "detection",
+          "object",
+          "aggregation",
+          "map"
+        ],
+        "ground_truth": [
+          "feature aggregation",
+          "map",
+          "object detection",
+          "class-balanced loss",
+          "multi-scale"
+        ]
+      },
+      {
+        "paper_id": 3,
+        "arxiv_id": "demo-cv-003",
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0,
+        "predicted": [
+          "global",
+          "image",
+          "attention",
+          "glanet",
+          "convolution"
+        ],
+        "ground_truth": [
+          "image classification",
+          "global context",
+          "convolutional network",
+          "patch",
+          "self-attention"
+        ]
+      },
+      {
+        "paper_id": 4,
+        "arxiv_id": "demo-cv-004",
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0,
+        "predicted": [
+          "progressive",
+          "image",
+          "resolution",
+          "generation",
+          "quality"
+        ],
+        "ground_truth": [
+          "super-resolution",
+          "progressive denoising",
+          "generation quality",
+          "image generation",
+          "guidance"
+        ]
+      },
+      {
+        "paper_id": 5,
+        "arxiv_id": "demo-cv-005",
+        "precision": 0.2,
+        "recall": 0.2,
+        "f1": 0.2,
+        "predicted": [
+          "segmentation",
+          "prompt",
+          "universal",
+          "guided",
+          "framework"
+        ],
+        "ground_truth": [
+          "mask",
+          "prompt",
+          "image segmentation",
+          "segmentation framework",
+          "zero-shot"
+        ]
+      },
+      {
+        "paper_id": 6,
+        "arxiv_id": "demo-cv-006",
+        "precision": 0.2,
+        "recall": 0.2,
+        "f1": 0.2,
+        "predicted": [
+          "modal",
+          "paired",
+          "fusion",
+          "lightweight",
+          "modalities"
+        ],
+        "ground_truth": [
+          "semantic space",
+          "multi-modal",
+          "knowledge distillation",
+          "lightweight",
+          "cross-modal fusion"
+        ]
+      },
+      {
+        "paper_id": 7,
+        "arxiv_id": "demo-cv-007",
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0,
+        "predicted": [
+          "dynamic",
+          "rendering",
+          "implicit",
+          "temporal",
+          "scenes"
+        ],
+        "ground_truth": [
+          "dynamic scenes",
+          "real-time",
+          "hash encoding",
+          "neural rendering",
+          "mobile"
+        ]
+      },
+      {
+        "paper_id": 8,
+        "arxiv_id": "demo-cl-001",
+        "precision": 0.4,
+        "recall": 0.4,
+        "f1": 0.4,
+        "predicted": [
+          "context",
+          "understanding",
+          "language",
+          "bidirectional",
+          "pre"
+        ],
+        "ground_truth": [
+          "masked modeling",
+          "language understanding",
+          "pre-training",
+          "context",
+          "bidirectional"
+        ]
+      },
+      {
+        "paper_id": 9,
+        "arxiv_id": "demo-cl-002",
+        "precision": 0.2,
+        "recall": 0.2,
+        "f1": 0.2,
+        "predicted": [
+          "autoregressive",
+          "task",
+          "language",
+          "diverse",
+          "without"
+        ],
+        "ground_truth": [
+          "multi-task",
+          "unsupervised",
+          "language model",
+          "autoregressive",
+          "zero-shot"
+        ]
+      },
+      {
+        "paper_id": 10,
+        "arxiv_id": "demo-cl-003",
+        "precision": 0.2,
+        "recall": 0.2,
+        "f1": 0.2,
+        "predicted": [
+          "knowledge",
+          "factual",
+          "retrieval",
+          "domain",
+          "enhanced"
+        ],
+        "ground_truth": [
+          "question answering",
+          "knowledge",
+          "open-domain",
+          "factual consistency",
+          "retrieval-augmented"
+        ]
+      },
+      {
+        "paper_id": 11,
+        "arxiv_id": "demo-cl-004",
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0,
+        "predicted": [
+          "rank",
+          "low",
+          "full",
+          "trainable",
+          "tuning"
+        ],
+        "ground_truth": [
+          "fine-tuning",
+          "low-rank",
+          "adaptation",
+          "large language model",
+          "parameter-efficient"
+        ]
+      },
+      {
+        "paper_id": 12,
+        "arxiv_id": "demo-cl-005",
+        "precision": 0.2,
+        "recall": 0.2,
+        "f1": 0.2,
+        "predicted": [
+          "reasoning",
+          "self",
+          "decoding",
+          "intermediate",
+          "answer"
+        ],
+        "ground_truth": [
+          "mathematical reasoning",
+          "reasoning",
+          "self-consistency",
+          "chain-of-thought",
+          "prompting"
+        ]
+      },
+      {
+        "paper_id": 13,
+        "arxiv_id": "demo-cl-006",
+        "precision": 0.2,
+        "recall": 0.2,
+        "f1": 0.2,
+        "predicted": [
+          "languages",
+          "resource",
+          "language",
+          "pairs",
+          "multilingual"
+        ],
+        "ground_truth": [
+          "multilingual",
+          "mixture-of-experts",
+          "low-resource",
+          "machine translation",
+          "routing"
+        ]
+      },
+      {
+        "paper_id": 14,
+        "arxiv_id": "demo-cl-007",
+        "precision": 0.2,
+        "recall": 0.2,
+        "f1": 0.2,
+        "predicted": [
+          "reasoning",
+          "models",
+          "small",
+          "progressive",
+          "compact"
+        ],
+        "ground_truth": [
+          "small model",
+          "distillation",
+          "reasoning",
+          "knowledge distillation",
+          "compact model"
+        ]
+      },
+      {
+        "paper_id": 15,
+        "arxiv_id": "demo-ai-001",
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0,
+        "predicted": [
+          "molecular",
+          "graph",
+          "message",
+          "fingerprint",
+          "passing"
+        ],
+        "ground_truth": [
+          "message passing",
+          "gnn",
+          "property prediction",
+          "molecular representation",
+          "graph neural network"
+        ]
+      },
+      {
+        "paper_id": 16,
+        "arxiv_id": "demo-ai-002",
+        "precision": 0.2,
+        "recall": 0.2,
+        "f1": 0.2,
+        "predicted": [
+          "agents",
+          "unseen",
+          "environments",
+          "strategies",
+          "exploration"
+        ],
+        "ground_truth": [
+          "novelty",
+          "hierarchical",
+          "navigation",
+          "reinforcement learning",
+          "exploration"
+        ]
+      },
+      {
+        "paper_id": 17,
+        "arxiv_id": "demo-ai-003",
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0,
+        "predicted": [
+          "constraint",
+          "search",
+          "graphs",
+          "causal",
+          "learning"
+        ],
+        "ground_truth": [
+          "acyclicity",
+          "differentiable",
+          "causal discovery",
+          "structure learning",
+          "continuous optimization"
+        ]
+      },
+      {
+        "paper_id": 18,
+        "arxiv_id": "demo-ai-004",
+        "precision": 0.2,
+        "recall": 0.2,
+        "f1": 0.2,
+        "predicted": [
+          "privacy",
+          "clients",
+          "collaborative",
+          "guarantees",
+          "averaging"
+        ],
+        "ground_truth": [
+          "differential privacy",
+          "federated learning",
+          "privacy",
+          "gradient compression",
+          "communication"
+        ]
+      },
+      {
+        "paper_id": 19,
+        "arxiv_id": "demo-ai-005",
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0,
+        "predicted": [
+          "anomaly",
+          "time",
+          "series",
+          "supervised",
+          "pretraining"
+        ],
+        "ground_truth": [
+          "augmentation",
+          "self-supervised",
+          "anomaly detection",
+          "contrastive learning",
+          "representation"
+        ]
+      },
+      {
+        "paper_id": 20,
+        "arxiv_id": "demo-ai-006",
+        "precision": 0.2,
+        "recall": 0.2,
+        "f1": 0.2,
+        "predicted": [
+          "agents",
+          "emergent",
+          "protocol",
+          "cooperative",
+          "agent"
+        ],
+        "ground_truth": [
+          "coordination",
+          "emergent communication",
+          "protocol",
+          "reinforcement learning",
+          "multi-agent"
+        ]
+      }
+    ]
+  },
+  "classification": {
+    "total": 20,
+    "accuracy": 0.7,
+    "per_class": {
+      "cs.CV": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "count": 7
+      },
+      "cs.CL": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "count": 7
+      },
+      "cs.AI": {
+        "precision": 0,
+        "recall": 0.0,
+        "f1": 0,
+        "count": 6
+      },
+      "cs.LG": {
+        "precision": 0.0,
+        "recall": 0,
+        "f1": 0,
+        "count": 0
+      },
+      "cs.RO": {
+        "precision": 0.0,
+        "recall": 0,
+        "f1": 0,
+        "count": 0
+      }
+    },
+    "details": [
+      {
+        "paper_id": 1,
+        "arxiv_id": "demo-cv-001",
+        "title": "Adaptive Residual Learning for Robust Visual Recognition",
+        "ground_truth": "cs.CV",
+        "predicted": "cs.CV",
+        "correct": true
+      },
+      {
+        "paper_id": 21,
+        "arxiv_id": "demo-cv-002",
+        "title": "Multi-Scale Feature Aggregation for Efficient Object Detecti",
+        "ground_truth": "cs.CV",
+        "predicted": "cs.CV",
+        "correct": true
+      },
+      {
+        "paper_id": 3,
+        "arxiv_id": "demo-cv-003",
+        "title": "Global-Local Attention Networks for Image Classification",
+        "ground_truth": "cs.CV",
+        "predicted": "cs.CV",
+        "correct": true
+      },
+      {
+        "paper_id": 4,
+        "arxiv_id": "demo-cv-004",
+        "title": "Progressive Noise Removal for High-Fidelity Image Synthesis",
+        "ground_truth": "cs.CV",
+        "predicted": "cs.CV",
+        "correct": true
+      },
+      {
+        "paper_id": 5,
+        "arxiv_id": "demo-cv-005",
+        "title": "Prompt-Guided Universal Segmentation Framework",
+        "ground_truth": "cs.CV",
+        "predicted": "cs.CV",
+        "correct": true
+      },
+      {
+        "paper_id": 6,
+        "arxiv_id": "demo-cv-006",
+        "title": "Lightweight Cross-Modal Fusion with Shared Semantic Space",
+        "ground_truth": "cs.CV",
+        "predicted": "cs.CV",
+        "correct": true
+      },
+      {
+        "paper_id": 7,
+        "arxiv_id": "demo-cv-007",
+        "title": "Temporal-Aware Implicit Neural Rendering for Dynamic Scenes",
+        "ground_truth": "cs.CV",
+        "predicted": "cs.CV",
+        "correct": true
+      },
+      {
+        "paper_id": 8,
+        "arxiv_id": "demo-cl-001",
+        "title": "Bidirectional Context Encoding for Deep Language Understandi",
+        "ground_truth": "cs.CL",
+        "predicted": "cs.CL",
+        "correct": true
+      },
+      {
+        "paper_id": 9,
+        "arxiv_id": "demo-cl-002",
+        "title": "Unsupervised Multi-Task Learning via Scalable Autoregressive",
+        "ground_truth": "cs.CL",
+        "predicted": "cs.CL",
+        "correct": true
+      },
+      {
+        "paper_id": 10,
+        "arxiv_id": "demo-cl-003",
+        "title": "Knowledge-Enhanced Retrieval for Open-Domain Question Answer",
+        "ground_truth": "cs.CL",
+        "predicted": "cs.CL",
+        "correct": true
+      },
+      {
+        "paper_id": 11,
+        "arxiv_id": "demo-cl-004",
+        "title": "Efficient Model Adaptation with Sparse Low-Rank Updates",
+        "ground_truth": "cs.CL",
+        "predicted": "cs.CL",
+        "correct": true
+      },
+      {
+        "paper_id": 12,
+        "arxiv_id": "demo-cl-005",
+        "title": "Self-Consistent Stepwise Reasoning for Complex Mathematical ",
+        "ground_truth": "cs.CL",
+        "predicted": "cs.CL",
+        "correct": true
+      },
+      {
+        "paper_id": 13,
+        "arxiv_id": "demo-cl-006",
+        "title": "Language-Aware Expert Routing for Multilingual Neural Transl",
+        "ground_truth": "cs.CL",
+        "predicted": "cs.CL",
+        "correct": true
+      },
+      {
+        "paper_id": 14,
+        "arxiv_id": "demo-cl-007",
+        "title": "Progressive Reasoning Distillation for Compact Language Mode",
+        "ground_truth": "cs.CL",
+        "predicted": "cs.CL",
+        "correct": true
+      },
+      {
+        "paper_id": 15,
+        "arxiv_id": "demo-ai-001",
+        "title": "Graph-Structured Message Passing for Molecular Property Pred",
+        "ground_truth": "cs.AI",
+        "predicted": "cs.LG",
+        "correct": false
+      },
+      {
+        "paper_id": 16,
+        "arxiv_id": "demo-ai-002",
+        "title": "Novelty-Seeking Agents for Navigation in Unseen Environments",
+        "ground_truth": "cs.AI",
+        "predicted": "cs.RO",
+        "correct": false
+      },
+      {
+        "paper_id": 17,
+        "arxiv_id": "demo-ai-003",
+        "title": "Differentiable Constraint Learning for Scalable Causal Disco",
+        "ground_truth": "cs.AI",
+        "predicted": "cs.LG",
+        "correct": false
+      },
+      {
+        "paper_id": 18,
+        "arxiv_id": "demo-ai-004",
+        "title": "Privacy-Preserving Collaborative Learning with Efficient Gra",
+        "ground_truth": "cs.AI",
+        "predicted": "cs.LG",
+        "correct": false
+      },
+      {
+        "paper_id": 19,
+        "arxiv_id": "demo-ai-005",
+        "title": "Self-Supervised Contrastive Pretraining for Time-Series Anom",
+        "ground_truth": "cs.AI",
+        "predicted": "cs.LG",
+        "correct": false
+      },
+      {
+        "paper_id": 20,
+        "arxiv_id": "demo-ai-006",
+        "title": "Emergent Communication Protocols for Decentralized Multi-Age",
+        "ground_truth": "cs.AI",
+        "predicted": null,
+        "correct": false
+      }
+    ]
+  },
+  "summary": "创新点提取 ROUGE-L: 40.51% | 关键词 F1@5: 13.00% | 分类准确率: 70.00%",
+  "recommendations": [
+    "创新点提取质量中等，建议检查 LLM 是否正常运行或补充标注数据",
+    "关键词提取质量偏低，建议启用 KeyBERT 或增加停用词过滤"
+  ]
+}

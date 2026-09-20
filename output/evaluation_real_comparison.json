@@ -1,0 +1,100 @@
+{
+  "date": "2026-08-19",
+  "per_paper": [
+    {
+      "arxiv_id": "2103.14030",
+      "title": "Swin Transformer: Hierarchical Vision Transformer using Shifted Windows",
+      "abstract_only": [
+        {
+          "problem": 0.1481,
+          "method": 0.2615,
+          "effect": 0.42
+        },
+        0.2765,
+        {
+          "problem": "将Transformer从语言领域适配到视觉领域面临挑战，视觉实体尺度变化大且图像像素分辨率远高于文本词，导致标准Transformer难以高效处理高分辨率图像并建模多尺度视觉特征。",
+          "method": "提出Swin Transformer，采用层次化Transformer结构和移位窗口机制，在非重叠局部窗口内计算自注意力以提升效率，并通过移位窗口实现跨窗口连接，具有线性计算复杂度。",
+          "effect": "在ImageNet-1K分类准确率达87.3%，COCO目标检测58.7 box AP和51.1 mask AP，ADE20K语义分割53.5 mIoU，分别超越先前最佳+2.7 box AP、+2.6 mask AP和+3.2 mIoU，证明Transformer作为视觉骨干的潜力。"
+        }
+      ],
+      "fulltext": [
+        {
+          "problem": 0.2556,
+          "method": 0.2745,
+          "effect": 0.3115
+        },
+        0.2805,
+        {
+          "problem": "将Transformer从语言迁移到视觉领域面临两大挑战：视觉实体尺度变化大，以及图像像素分辨率远高于文本词，导致传统自注意力计算复杂度高且难以建模多尺度特征。",
+          "method": "提出Swin Transformer，采用分层架构和移位窗口机制：自注意力限制在非重叠局部窗口内计算以降低复杂度，同时通过移位窗口实现跨窗口连接，从而在不同尺度上灵活建模，并具有相对于图像尺寸的线性计算复杂度。",
+          "effect": "在ImageNet-1K图像分类取得87.3 top-1准确率，COCO目标检测与实例分割分别达到58.7 box AP和51.1 mask AP，ADE20K语义分割达到53.5 mIoU，较先前最优模型分别提升+2.7 box AP、+2.6 mask AP和+3.2 mIoU，验证了Transformer作为视觉骨干网络的有效性。"
+        }
+      ]
+    },
+    {
+      "arxiv_id": "1810.04805",
+      "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+      "abstract_only": [
+        {
+          "problem": 0.2885,
+          "method": 0.1682,
+          "effect": 0.321
+        },
+        0.2592,
+        {
+          "problem": "现有语言表示模型在预训练时受限于单向或浅层双向上下文，无法捕获深层双向语义信息，限制了下游任务性能。",
+          "method": "提出BERT模型，通过在所有层联合左右上下文对未标记文本进行深度双向Transformer预训练，微调时仅需添加一个额外输出层即可适用于广泛任务。",
+          "effect": "在11项NLP任务上取得最优结果，包括GLUE分数提升至80.5%（绝对提升7.7%）、MultiNLI准确率86.7%（提升4.6%）、SQuAD v1.1 F1达93.2（提升1.5）、SQuAD v2.0 F1达83.1（提升5.1）。"
+        }
+      ],
+      "fulltext": [
+        {
+          "problem": 0.2642,
+          "method": 0.2314,
+          "effect": 0.3301
+        },
+        0.2752,
+        {
+          "problem": "现有语言表示模型受限于单向架构或浅层双向融合，无法深度同时利用左右上下文信息，制约了下游任务的理解能力。",
+          "method": "提出BERT模型，基于Transformer编码器，通过掩码语言模型和下一句预测两个预训练任务，在无标注文本上联合训练深度双向表示，微调时仅需添加一个额外输出层即可适应多种任务。",
+          "effect": "在11项自然语言处理任务上取得新的最优结果，GLUE分数提升至80.5%（绝对提升7.7%），MultiNLI准确率提升至86.7%（绝对提升4.6%），SQuAD v1.1测试F1提升至93.2（绝对提升1.5），SQuAD v2.0测试F1提升至83.1（绝对提升5.1）。"
+        }
+      ]
+    },
+    {
+      "arxiv_id": "1602.05629",
+      "title": "Communication-Efficient Learning of Deep Networks from Decentralized Data",
+      "abstract_only": [
+        {
+          "problem": 0.0777,
+          "method": 0.1705,
+          "effect": 0.1207
+        },
+        0.123,
+        {
+          "problem": "移动设备拥有大量适合训练模型的数据，但这些数据隐私敏感、数量庞大，无法上传至数据中心进行集中式训练。",
+          "method": "提出联邦学习方法，基于迭代模型平均，在移动设备上保留训练数据并本地计算更新，通过聚合这些更新来学习共享深度网络模型。",
+          "effect": "实验表明该方法对不平衡和非独立同分布数据分布具有鲁棒性，且与同步随机梯度下降相比，所需通信轮次减少10-100倍。"
+        }
+      ],
+      "fulltext": [
+        {
+          "problem": 0.0674,
+          "method": 0.2,
+          "effect": 0.1587
+        },
+        0.142,
+        {
+          "problem": "移动设备上的数据隐私敏感且量大，无法集中记录到数据中心进行传统训练。",
+          "method": "提出联邦学习（Federated Learning），训练数据保留在移动设备上，通过聚合本地计算的更新学习共享模型，基于迭代模型平均。",
+          "effect": "在五个模型架构和四个数据集上实证评估，表明该方法对不平衡和非独立同分布数据具有鲁棒性；通信轮数相比同步随机梯度下降减少10-100倍。"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "avg_abstract_only": 0.2196,
+    "avg_fulltext": 0.2326,
+    "delta": 0.013
+  }
+}

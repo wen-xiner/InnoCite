@@ -1,0 +1,39 @@
+# InnoCite 依赖清单 — 版本已锁定
+# 锁定日期：2026-08-20，版本取自当前 venv（全部验证通过的运行组合）
+# 如需升级，请升级后运行 `python -m pytest` 确认无回归。
+
+# ── Web 框架 ──
+Flask==3.1.3
+Flask-SQLAlchemy==3.1.1
+SQLAlchemy==2.0.52
+Flask-WTF==1.3.0
+Flask-Migrate==4.1.0
+flasgger==0.9.7.1
+
+# ── 论文导入与解析 ──
+arxiv==4.0.1
+pdfplumber==0.11.10
+requests==2.34.2
+
+# ── 文本处理 ──
+jieba==0.42.1
+
+# ── 机器学习 / 语义向量 ──
+scikit-learn==1.9.0
+sentence-transformers==6.0.0
+numpy==2.5.2
+
+# ── 可视化与报告生成 ──
+plotly==6.9.0
+kaleido==1.3.0
+reportlab==5.0.0
+
+# ── LLM（DeepSeek，OpenAI 兼容）──
+openai==3.2.0
+
+# ── 开发与测试 ──
+pytest==9.1.1
+
+# ── 可选：模型评估（当前未安装，需要时取消注释）──
+# rouge-score>=0.1.2
+# bert-score>=0.3.13

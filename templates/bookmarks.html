@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}我的收藏 - InnoCite{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0"><i class="bi bi-bookmark-star-fill text-warning"></i> 我的收藏</h1>
+</div>
+
+<div id="bookmarkList">
+    <div class="text-center py-5" id="bookmarkLoading">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-2 text-muted">加载收藏列表...</p>
+    </div>
+    <div id="bookmarkEmpty" class="text-center py-5 d-none">
+        <i class="bi bi-bookmark-x" style="font-size:3rem;color:#ccc;"></i>
+        <p class="mt-2 text-muted">还没有收藏任何论文</p>
+        <a href="{{ url_for('papers.index') }}" class="btn btn-primary btn-sm">去论文库浏览</a>
+    </div>
+    <div class="table-responsive d-none" id="bookmarkTable">
+        <table class="table table-hover align-middle">
+            <thead class="table-light"><tr>
+                <th>标题</th><th>学科</th><th>年份</th><th>作者</th><th>操作</th>
+            </tr></thead>
+            <tbody id="bookmarkTbody"></tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<script defer>
+document.addEventListener('DOMContentLoaded', () => {
+    const tbody  = document.getElementById('bookmarkTbody');
+    const loader = document.getElementById('bookmarkLoading');
+    const empty  = document.getElementById('bookmarkEmpty');
+    const table  = document.getElementById('bookmarkTable');
+
+    fetch('/api/bookmarks', { credentials: 'same-origin' })
+        .then(r => r.json())
+        .then(d => {
+            loader.classList.add('d-none');
+            const papers = d.data || [];
+            if (!papers.length) { empty.classList.remove('d-none'); return; }
+            table.classList.remove('d-none');
+
+            papers.forEach(p => {
+                const tr = document.createElement('tr');
+                const catBadge = p.category
+                    ? `<span class="badge bg-secondary">${p.category}</span>`
+                    : '<span class="badge bg-light text-muted">未知</span>';
+
+                tr.innerHTML = `
+                    <td><a href="/papers/${p.id}" class="text-decoration-none fw-medium">${escHtml(p.title||'')}</a></td>
+                    <td>${catBadge}</td>
+                    <td class="text-nowrap">${p.year||'—'}</td>
+                    <td class="text-muted small">${(p.authors||[]).slice(0,2).join('; ')||'—'}</td>
+                    <td>
+                        <button class="btn btn-outline-danger btn-sm" onclick="unbookmark(${p.id}, this.closest('tr'))" title="取消收藏">
+                            <i class="bi bi-bookmark-x"></i>
+                        </button>
+                    </td>`;
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(() => { loader.innerHTML = '<p class="text-danger">加载失败，请刷新重试</p>'; });
+});
+
+function escHtml(s) { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+function unbookmark(paperId, row) {
+    fetch(`/api/bookmarks/${paperId}`, { method:'DELETE', credentials:'same-origin' })
+        .then(r => r.json())
+        .then(d => {
+            if (d.success) {
+                row.remove();
+                if (!document.getElementById('bookmarkTbody').children.length) {
+                    document.getElementById('bookmarkTable').classList.add('d-none');
+                    document.getElementById('bookmarkEmpty').classList.remove('d-none');
+                }
+            }
+        });
+}
+</script>
+{% endblock %}

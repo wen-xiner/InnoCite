@@ -1,0 +1,445 @@
+{% extends "base.html" %}
+{% block title %}论文库 - InnoCite{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">
+        <i class="bi bi-journals"></i> 论文库
+        <span class="badge bg-secondary ms-2" id="headerCount">{{ total }}</span>
+    </h1>
+    <div>
+        <div class="btn-group me-2">
+            <button class="btn btn-outline-success btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <i class="bi bi-download"></i> 导出数据
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#" onclick="exportData('csv')">
+                    <i class="bi bi-file-earmark-spreadsheet"></i> 导出 CSV
+                </a></li>
+                <li><a class="dropdown-item" href="#" onclick="exportData('json')">
+                    <i class="bi bi-file-earmark-code"></i> 导出 JSON
+                </a></li>
+            </ul>
+        </div>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#importModal">
+            <i class="bi bi-plus-lg"></i> 导入论文
+        </button>
+    </div>
+</div>
+
+<!-- 统计仪表盘 -->
+<div class="row mb-4" id="statsCards">
+    <div class="col-md-3">
+        <div class="card border-0 bg-primary text-white h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div style="font-size:2.5rem;opacity:.3;"><i class="bi bi-journals"></i></div>
+                <div>
+                    <div class="fw-bold" style="font-size:2rem;line-height:1;" id="dashPaperCount">{{ total }}</div>
+                    <small class="opacity-75">论文总数</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 bg-success text-white h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div style="font-size:2.5rem;opacity:.3;"><i class="bi bi-diagram-3"></i></div>
+                <div>
+                    <div class="fw-bold" style="font-size:2rem;line-height:1;" id="dashCatCount">{{ categories|length }}</div>
+                    <small class="opacity-75">学科数量</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 bg-info text-white h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div style="font-size:2.5rem;opacity:.3;"><i class="bi bi-stars"></i></div>
+                <div>
+                    <div class="fw-bold" style="font-size:2rem;line-height:1;" id="dashInnoCount">-</div>
+                    <small class="opacity-75">创新点总数</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 bg-warning text-dark h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div style="font-size:2.5rem;opacity:.3;"><i class="bi bi-check-circle"></i></div>
+                <div>
+                    <div class="fw-bold" style="font-size:2rem;line-height:1;" id="dashConfAvg">-</div>
+                    <small class="opacity-75">平均置信度</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 快捷操作栏 -->
+<div class="d-flex flex-wrap gap-2 mb-4">
+    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#importModal">
+        <i class="bi bi-plus-lg"></i> 导入论文
+    </button>
+    <button class="btn btn-outline-success btn-sm" onclick="exportData('csv')">
+        <i class="bi bi-file-earmark-spreadsheet"></i> 导出 CSV
+    </button>
+    <button class="btn btn-outline-info btn-sm" onclick="exportData('json')">
+        <i class="bi bi-file-earmark-code"></i> 导出 JSON
+    </button>
+    <a href="/timeline" class="btn btn-outline-purple btn-sm">
+        <i class="bi bi-clock-history"></i> 时间线视图
+    </a>
+    <a href="/report" class="btn btn-outline-danger btn-sm">
+        <i class="bi bi-file-pdf"></i> 综合报告
+    </a>
+</div>
+
+<!-- 批量操作栏（默认隐藏，选中论文后显示） -->
+<div id="batchBar" class="card border-danger mb-3 d-none">
+    <div class="card-body py-2 d-flex align-items-center gap-3">
+        <span class="fw-bold text-danger" id="batchCount">已选 0 篇</span>
+        <div class="btn-group btn-group-sm">
+            <button class="btn btn-outline-danger" onclick="batchOp('delete')">
+                <i class="bi bi-trash"></i> 批量删除
+            </button>
+            <button class="btn btn-outline-primary" onclick="batchOp('re-extract')">
+                <i class="bi bi-arrow-repeat"></i> 重新提取创新点
+            </button>
+            <button class="btn btn-outline-secondary" onclick="batchOp('set-category')">
+                <i class="bi bi-tag"></i> 修改学科为
+            </button>
+            <select id="batchCategory" class="form-select form-select-sm" style="width:auto">
+                <option value="">选择学科</option>
+                {% for cat in categories %}
+                <option value="{{ cat }}">{{ cat }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button class="btn btn-outline-dark btn-sm ms-auto" onclick="toggleSelectAll()">
+            <i class="bi bi-check-square"></i> 全选/取消
+        </button>
+    </div>
+</div>
+
+<!-- 搜索和筛选 -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="GET" action="{{ url_for('papers.index') }}" class="row g-2">
+            <div class="col-md-6">
+                <input type="text" name="q" class="form-control" placeholder="搜索标题、作者或摘要..." value="{{ query }}">
+            </div>
+            <div class="col-md-3">
+                <select name="category" class="form-select">
+                    <option value="">全部学科</option>
+                    {% for cat in categories %}
+                    <option value="{{ cat }}" {% if category_filter == cat %}selected{% endif %}>{{ cat }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-outline-primary w-100">
+                    <i class="bi bi-search"></i> 搜索
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 论文列表 -->
+{% if papers %}
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th style="width: 2%"><input type="checkbox" id="selectAll" onchange="toggleAllCheckboxes(this)" title="全选/取消"></th>
+                <th style="width: 2%">收藏</th>
+                <th style="width: 33%">标题</th>
+                <th style="width: 10%">学科</th>
+                <th style="width: 6%">年份</th>
+                <th style="width: 12%">创新点</th>
+                <th style="width: 8%">来源</th>
+                <th style="width: 17%">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for paper in papers %}
+            <tr data-paper-id="{{ paper.id }}">
+                <td><input type="checkbox" class="paper-checkbox" value="{{ paper.id }}" onchange="updateBatchBar()"></td>
+                <td>
+                    <button class="btn btn-sm bookmark-btn" data-paper-id="{{ paper.id }}" onclick="toggleBookmark(this, {{ paper.id }})" title="收藏">
+                        <i class="bi bi-bookmark-plus"></i>
+                    </button>
+                </td>
+                <td>
+                    <a href="{{ url_for('papers.paper_detail', paper_id=paper.id) }}" class="text-decoration-none fw-medium">
+                        {{ paper.title[:80] }}{% if paper.title|length > 80 %}...{% endif %}
+                    </a>
+                    {% if paper.authors %}
+                    <br><small class="text-muted">{{ paper.authors[:60] }}</small>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if paper.category %}
+                    <span class="badge bg-info text-dark">{{ paper.category }}</span>
+                    {% else %}
+                    <span class="text-muted">-</span>
+                    {% endif %}
+                </td>
+                <td>{{ paper.year or '-' }}</td>
+                <td>
+                    {% if paper.innovation %}
+                    <div class="d-flex align-items-center gap-1">
+                        <span class="conf-ring"
+                              style="--cr-target:{{ '%.0f'|format(paper.innovation.confidence * 100) }};--cr-pct:0;--cr-index:{{ loop.index0 }};--cr-color:{% if paper.innovation.confidence >= 0.7 %}#10b981{% elif paper.innovation.confidence >= 0.4 %}#f59e0b{% else %}#ef4444{% endif %};">
+                            <span class="cr-text">{{ "%.0f"|format(paper.innovation.confidence * 100) }}</span>
+                        </span>
+                        {% if paper.innovation.is_verified %}
+                        <i class="bi bi-check-circle-fill text-success small" title="已确认"></i>
+                        {% endif %}
+                    </div>
+                    {% else %}
+                    <span class="badge bg-secondary">未提取</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <span class="badge bg-light text-dark">{{ paper.source_type }}</span>
+                </td>
+                <td class="text-nowrap">
+                    <div class="btn-group btn-group-sm">
+                        <a href="{{ url_for('papers.paper_detail', paper_id=paper.id) }}" class="btn btn-outline-primary btn-sm" title="查看详情">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <button class="btn btn-outline-secondary btn-sm edit-innovation-btn" data-paper-id="{{ paper.id }}" title="编辑创新点">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm delete-paper-btn" data-paper-id="{{ paper.id }}" data-paper-title="{{ paper.title[:60] }}" title="删除论文">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- 分页 -->
+{% if total_pages > 1 %}
+<nav>
+    <ul class="pagination justify-content-center">
+        <li class="page-item {{ 'disabled' if page <= 1 }}">
+            <a class="page-link" href="?page={{ page - 1 }}&q={{ query }}&category={{ category_filter }}">上一页</a>
+        </li>
+        {% for p in range(1, total_pages + 1) %}
+        <li class="page-item {{ 'active' if p == page }}">
+            <a class="page-link" href="?page={{ p }}&q={{ query }}&category={{ category_filter }}">{{ p }}</a>
+        </li>
+        {% endfor %}
+        <li class="page-item {{ 'disabled' if page >= total_pages }}">
+            <a class="page-link" href="?page={{ page + 1 }}&q={{ query }}&category={{ category_filter }}">下一页</a>
+        </li>
+    </ul>
+</nav>
+{% endif %}
+
+{% else %}
+<div class="text-center py-5">
+    <svg width="140" height="100" viewBox="0 0 140 100" fill="none" class="mb-3">
+        <rect x="15" y="10" width="110" height="78" rx="5" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="5 4" fill="#f8fafc"/>
+        <rect x="30" y="28" width="80" height="6" rx="3" fill="#e2e8f0"/>
+        <rect x="30" y="42" width="55" height="6" rx="3" fill="#e2e8f0"/>
+        <rect x="30" y="56" width="65" height="6" rx="3" fill="#e2e8f0"/>
+        <circle cx="110" cy="70" r="16" fill="white" stroke="#4a6cf7" stroke-width="2.5"/>
+        <text x="110" y="75" text-anchor="middle" font-size="16" font-weight="700" fill="#4a6cf7">+</text>
+        <circle cx="110" cy="70" r="24" fill="none" stroke="#4a6cf7" stroke-width="1" opacity=".15"/>
+    </svg>
+    <h5 class="text-muted fw-semibold">还没有论文数据</h5>
+    <p class="text-muted small mb-3">导入论文后，系统会自动提炼创新点并生成分析报告</p>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#importModal">
+        <i class="bi bi-plus-lg"></i> 导入第一批论文
+    </button>
+</div>
+{% endif %}
+
+<!-- 导入模态框 -->
+<div class="modal fade" id="importModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-cloud-upload"></i> 导入论文</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Tab切换 -->
+                <ul class="nav nav-tabs mb-3" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-arxiv-id">
+                            <i class="bi bi-link-45deg"></i> arXiv ID
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-arxiv-search">
+                            <i class="bi bi-search"></i> 关键词搜索
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-csv">
+                            <i class="bi bi-file-earmark-spreadsheet"></i> CSV 导入
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-enw">
+                            <i class="bi bi-journal-text"></i> EndNote
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-pdf">
+                            <i class="bi bi-file-pdf"></i> PDF 上传
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <!-- Tab 1: arXiv ID -->
+                    <div class="tab-pane fade show active" id="tab-arxiv-id">
+                        <form id="arxivIdForm" onsubmit="importArxivId(event)">
+                            <div class="mb-3">
+                                <label class="form-label">arXiv ID</label>
+                                <input type="text" class="form-control" placeholder="例如: 2101.00123 或 1706.03762" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-download"></i> 导入
+                            </button>
+                        </form>
+                        <div id="arxivIdResult" class="mt-3"></div>
+                    </div>
+
+                    <!-- Tab 2: arXiv 关键词搜索 -->
+                    <div class="tab-pane fade" id="tab-arxiv-search">
+                        <form id="arxivSearchForm" onsubmit="importArxivSearch(event)">
+                            <div class="mb-3">
+                                <label class="form-label">搜索关键词</label>
+                                <input type="text" class="form-control" placeholder="例如: deep learning, attention mechanism" required>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <label class="form-label">起始年份</label>
+                                    <input type="number" class="form-control" placeholder="2020" min="1990" max="{{ current_year }}">
+                                </div>
+                                <div class="col">
+                                    <label class="form-label">结束年份</label>
+                                    <input type="number" class="form-control" placeholder="2024" min="1990" max="{{ current_year }}">
+                                </div>
+                                <div class="col">
+                                    <label class="form-label">最大篇数</label>
+                                    <input type="number" class="form-control" value="20" min="1" max="100">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-search"></i> 搜索导入
+                            </button>
+                        </form>
+                        <div class="import-progress" id="arxivSearchProgress">
+                            <div class="progress"><div class="progress-bar" style="width:0%"></div></div>
+                            <div class="status-text">正在连接 arXiv API…</div>
+                        </div>
+                        <div id="arxivSearchResult" class="mt-3"></div>
+                    </div>
+
+                    <!-- Tab 3: CSV 导入 -->
+                    <div class="tab-pane fade" id="tab-csv">
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i>
+                            <a href="/api/csv-template" class="alert-link">下载CSV模板</a>
+                            ，按模板填写后上传。列：title, authors, year, abstract, category
+                        </div>
+                        <form id="csvForm" onsubmit="importCSV(event)">
+                            <div class="mb-3">
+                                <label class="form-label">选择CSV文件</label>
+                                <input type="file" class="form-control" accept=".csv" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-upload"></i> 上传导入
+                            </button>
+                        </form>
+                        <div id="csvResult" class="mt-3"></div>
+                    </div>
+
+                    <!-- Tab 4: EndNote 导入 -->
+                    <div class="tab-pane fade" id="tab-enw">
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i>
+                            支持从 <b>知网、万方、PubMed</b> 等数据库导出的 EndNote (.enw) 文件。
+                            在知网搜索结果页勾选论文 →「导出参考文献」→ 选择「EndNote」格式即可。
+                        </div>
+                        <form id="enwForm" onsubmit="importENW(event)">
+                            <div class="mb-3">
+                                <label class="form-label">选择 .enw 文件</label>
+                                <input type="file" class="form-control" accept=".enw,.txt" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-upload"></i> 上传导入
+                            </button>
+                        </form>
+                        <div id="enwResult" class="mt-3"></div>
+                    </div>
+
+                    <!-- Tab 5: PDF 上传 -->
+                    <div class="tab-pane fade" id="tab-pdf">
+                        <div class="alert alert-warning">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            PDF解析为实验性功能，解析失败可手动填写元数据。
+                        </div>
+                        <form id="pdfForm" onsubmit="importPDF(event)">
+                            <div class="mb-3">
+                                <label class="form-label">选择PDF文件</label>
+                                <input type="file" class="form-control" accept=".pdf" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-file-pdf"></i> 上传解析
+                            </button>
+                        </form>
+                        <div id="pdfResult" class="mt-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 创新点编辑模态框 -->
+<div class="modal fade" id="innovationModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-pencil-square"></i> 编辑创新点</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="innovationForm" onsubmit="saveInnovation(event)">
+                    <input type="hidden" id="innoPaperId">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">📌 解决的问题</label>
+                        <textarea class="form-control" id="innoProblem" rows="3" placeholder="例如：现有方法无法处理长距离依赖..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">🔧 采用的方法</label>
+                        <textarea class="form-control" id="innoMethod" rows="3" placeholder="例如：提出基于自注意力的Transformer架构..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">📊 达到的效果</label>
+                        <textarea class="form-control" id="innoEffect" rows="3" placeholder="例如：准确率提升15%，达到SOTA水平..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">完整陈述预览</label>
+                        <div id="innoPreview" class="p-3 bg-light rounded"></div>
+                    </div>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check-lg"></i> 保存创新点
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

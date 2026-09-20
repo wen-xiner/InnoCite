@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{% block title %}InnoCite - 学术论文创新点提炼{% endblock %}</title>
+    <!-- Bootstrap 5 CSS（本地静态资源，支持断网演示） -->
+    <link href="{{ url_for('static', filename='vendor/bootstrap/bootstrap.min.css') }}" rel="stylesheet">
+    <!-- Bootstrap Icons（本地静态资源） -->
+    <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <!-- Plotly.js 仅图表页按需加载，不在此全局引入 -->
+    <!-- 自定义样式 -->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{{ url_for('papers.index') }}">
+                <i class="bi bi-lightbulb-fill"></i> InnoCite
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{{ url_for('papers.index') }}">
+                            <i class="bi bi-journals"></i> 论文库
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/trends' %}active{% endif %}" href="{{ url_for('trends.trends') }}">
+                            <i class="bi bi-graph-up"></i> 热度趋势
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/recommend' %}active{% endif %}" href="{{ url_for('recommend.recommend_page') }}">
+                            <i class="bi bi-lightbulb"></i> 跨学科推荐
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/report' %}active{% endif %}" href="{{ url_for('report.report_page') }}">
+                            <i class="bi bi-file-earmark-text"></i> 综合报告
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path.startswith('/evaluate') %}active{% endif %}" href="{{ url_for('evaluate.evaluate_page') }}">
+                            <i class="bi bi-bar-chart-line"></i> 模型评估
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/bookmarks' %}active{% endif %}" href="{{ url_for('bookmarks.bookmarks_page') }}">
+                            <i class="bi bi-bookmark-star"></i> 我的收藏
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/about' %}active{% endif %}" href="{{ url_for('report.about') }}">
+                            <i class="bi bi-info-circle"></i> 使用说明
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/apidocs/" target="_blank">
+                            <i class="bi bi-code-slash"></i> API 文档
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto align-items-center">
+                    {% if session.user_id %}
+                    <li class="nav-item dropdown me-2">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> {{ session.display_name or session.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li class="dropdown-header small text-muted">
+                                已登录为 <strong>{{ session.username }}</strong>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">
+                                <i class="bi bi-box-arrow-right"></i> 退出登录
+                            </a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    <button class="theme-toggle" id="themeToggle" title="切换暗色模式">
+                        <i class="bi bi-moon-stars-fill"></i>
+                    </button>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash消息 -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="container mt-3">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <!-- 主内容区 -->
+    <main class="container mt-3 mb-5">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-light text-center text-muted py-3 mt-5 border-top">
+        <div class="container">
+            <small>InnoCite © 2024 — 学术论文创新点提炼与跨学科推荐系统</small>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS（本地静态资源） -->
+    <script src="{{ url_for('static', filename='vendor/bootstrap/bootstrap.bundle.min.js') }}"></script>
+    <!-- 全局公共脚本（defer 不阻塞页面渲染） -->
+    <script defer src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

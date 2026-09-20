@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+{% block title %}{{ paper.title[:40] }} - InnoCite{% endblock %}
+
+{% block content %}
+<!-- 快速操作悬浮栏 -->
+<div id="quickActionBar" class="quick-action-bar">
+    <div class="container d-flex align-items-center justify-content-between">
+        <span class="text-truncate fw-semibold small" style="max-width: 50%;">{{ paper.title[:60] }}</span>
+        <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-outline-primary" onclick="editInnovation({{ paper.id }})">
+                <i class="bi bi-pencil"></i> 编辑创新点
+            </button>
+            <a class="btn btn-sm btn-outline-info" href="#recommendCard">
+                <i class="bi bi-lightbulb"></i> 查看推荐
+            </a>
+            <button class="btn btn-sm btn-outline-danger delete-paper-btn" data-paper-id="{{ paper.id }}" data-paper-title="{{ paper.title[:60] }}">
+                <i class="bi bi-trash"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('papers.index') }}">论文库</a></li>
+        <li class="breadcrumb-item active">{{ paper.title[:50] }}...</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <!-- 左侧：论文元数据 + 创新点（宽度充足，自然文档流） -->
+    <div class="col-md-8">
+        <!-- 论文基本信息 + 摘要 -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title h4">{{ paper.title }}</h2>
+                <p class="text-muted">
+                    {{ paper.authors or '作者未知' }}
+                    {% if paper.year %}<span class="mx-2">·</span> {{ paper.year }}{% endif %}
+                    {% if paper.venue %}<span class="mx-2">·</span> {{ paper.venue }}{% endif %}
+                </p>
+
+                <div class="mb-2">
+                    {% if paper.category %}
+                    <span class="badge bg-info text-dark">{{ paper.category }}</span>
+                    {% endif %}
+                    <span class="badge bg-light text-dark">{{ paper.source_type }}</span>
+                    {% if paper.arxiv_id %}
+                    <span class="badge bg-secondary">arXiv:{{ paper.arxiv_id }}</span>
+                    {% endif %}
+                </div>
+
+                <hr>
+
+                <h5 class="h6 fw-bold">摘要</h5>
+                <div class="reading-width abstract-text p-4 rounded">
+                    {{ paper.abstract or '暂无摘要' }}
+                </div>
+            </div>
+        </div>
+
+        <!-- 创新点（挪至摘要下方，享受 8 列宽度） -->
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span class="fw-bold"><i class="bi bi-stars"></i> 创新点</span>
+                <button class="btn btn-sm btn-outline-primary" onclick="editInnovation({{ paper.id }})">
+                    <i class="bi bi-pencil"></i> 编辑
+                </button>
+            </div>
+            <div class="card-body" id="innovationCard">
+                {% if innovation %}
+                <!-- 创新点叙事流程图 -->
+                <div class="inno-flow">
+                    <div class="inno-node {% if innovation.is_verified %}verified{% endif %}">
+                        <div class="node-icon">📌</div>
+                        <div class="node-label">研究问题</div>
+                        <div class="node-text">{{ innovation.problem }}</div>
+                    </div>
+                    <div class="inno-arrow"><i class="bi bi-arrow-right"></i></div>
+                    <div class="inno-node {% if innovation.is_verified %}verified{% endif %}">
+                        <div class="node-icon">🔧</div>
+                        <div class="node-label">提出方法</div>
+                        <div class="node-text">{{ innovation.method }}</div>
+                    </div>
+                    <div class="inno-arrow"><i class="bi bi-arrow-right"></i></div>
+                    <div class="inno-node {% if innovation.is_verified %}verified{% endif %}">
+                        <div class="node-icon">📊</div>
+                        <div class="node-label">实验效果</div>
+                        <div class="node-text">{{ innovation.effect }}</div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="conf-ring"
+                              style="--cr-target:{{ '%.0f'|format(innovation.confidence * 100) }};--cr-pct:0;--cr-index:0;--cr-color:{% if innovation.confidence >= 0.7 %}#10b981{% elif innovation.confidence >= 0.4 %}#f59e0b{% else %}#ef4444{% endif %};">
+                            <span class="cr-text">{{ "%.0f"|format(innovation.confidence * 100) }}</span>
+                        </span>
+                        <small class="text-muted">置信度</small>
+                    </div>
+                    {% if innovation.is_verified %}
+                    <span class="badge bg-success"><i class="bi bi-check-circle"></i> 已确认</span>
+                    {% else %}
+                    <span class="badge bg-secondary">待确认</span>
+                    {% endif %}
+                </div>
+                {% else %}
+                <p class="text-muted text-center py-4">
+                    <i class="bi bi-hourglass-split" style="font-size: 2rem;"></i><br>
+                    创新点尚未提取
+                </p>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if paper.full_text %}
+        <!-- 全文预览 -->
+        <div class="card mb-4">
+            <div class="card-header fw-bold">全文预览</div>
+            <div class="card-body">
+                <div class="fulltext-preview p-3 bg-light rounded" style="max-height: 400px; overflow-y: auto;">
+                    <pre style="white-space: pre-wrap; font-size: 0.9rem;">{{ paper.full_text[:3000] }}{% if paper.full_text|length > 3000 %}...（内容过长，仅显示前3000字符）{% endif %}</pre>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- 右侧：仅跨学科推荐（独立 sticky） -->
+    <div class="col-md-4">
+        <div class="card sticky-top" style="top: 1.5rem; z-index: 100;">
+            <div class="card-header fw-bold">
+                <i class="bi bi-lightbulb"></i> 跨学科推荐
+            </div>
+            <div class="card-body" id="recommendCard" data-paper-id="{{ paper.id }}">
+                <div id="recLoading">
+                    <div class="skeleton-rec-card" style="margin-bottom:10px;">
+                        <div class="skeleton skeleton-text"></div>
+                        <div class="skeleton skeleton-text"></div>
+                        <div class="skeleton skeleton-text"></div>
+                    </div>
+                    <div class="skeleton-rec-card" style="margin-bottom:10px;">
+                        <div class="skeleton skeleton-text"></div>
+                        <div class="skeleton skeleton-text"></div>
+                        <div class="skeleton skeleton-text"></div>
+                    </div>
+                    <div class="skeleton-rec-card">
+                        <div class="skeleton skeleton-text"></div>
+                        <div class="skeleton skeleton-text"></div>
+                        <div class="skeleton skeleton-text"></div>
+                    </div>
+                </div>
+                <div id="recResults"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 创新点编辑模态框（复用index中的） -->
+<div class="modal fade" id="innovationModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-pencil-square"></i> 编辑创新点</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="innovationForm" onsubmit="saveInnovation(event)">
+                    <input type="hidden" id="innoPaperId">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">📌 解决的问题</label>
+                        <textarea class="form-control" id="innoProblem" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">🔧 采用的方法</label>
+                        <textarea class="form-control" id="innoMethod" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">📊 达到的效果</label>
+                        <textarea class="form-control" id="innoEffect" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">完整陈述预览</label>
+                        <div id="innoPreview" class="p-3 bg-light rounded"></div>
+                    </div>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check-lg"></i> 保存创新点
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/paper-detail.js') }}"></script>
+{% endblock %}

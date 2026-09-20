@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+{% block title %}模型评估 — InnoCite{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">📊 模型评估报告</h2>
+        <button class="btn btn-primary" onclick="runFullEvaluation()">
+            🔄 运行完整评估
+        </button>
+    </div>
+
+    <!-- 评估概览卡片 -->
+    <div class="row mb-4" id="summary-cards">
+        <div class="col-md-3">
+            <div class="card bg-light">
+                <div class="card-body text-center">
+                    <h5 class="text-muted">标注论文数</h5>
+                    <h3 id="card-total" class="mb-0">—</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-light">
+                <div class="card-body text-center">
+                    <h5 class="text-muted">创新点 ROUGE-L</h5>
+                    <h3 id="card-rouge" class="mb-0">—</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-light">
+                <div class="card-body text-center">
+                    <h5 class="text-muted">关键词 F1@5</h5>
+                    <h3 id="card-kw-f1" class="mb-0">—</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-light">
+                <div class="card-body text-center">
+                    <h5 class="text-muted">分类准确率</h5>
+                    <h3 id="card-acc" class="mb-0">—</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 综合建议 -->
+    <div class="alert alert-info mb-4 d-none" id="summary-alert">
+        <strong>📝 综合总结：</strong><span id="summary-text"></span>
+    </div>
+
+    <!-- 改进建议 -->
+    <div class="card mb-4 d-none" id="recommendations-card">
+        <div class="card-header"><strong>💡 改进建议</strong></div>
+        <ul class="list-group list-group-flush" id="recommendations-list"></ul>
+    </div>
+
+    <!-- 创新点评估详情 -->
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <strong>🔬 创新点提取评估（ROUGE-L）</strong>
+            <button class="btn btn-sm btn-outline-primary" onclick="loadInnovationEval()">刷新</button>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0" id="inno-table">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>论文</th>
+                            <th>问题 ROUGE-L</th>
+                            <th>方法 ROUGE-L</th>
+                            <th>效果 ROUGE-L</th>
+                            <th>平均</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inno-tbody">
+                        <tr><td colspan="5" class="text-center text-muted">点击"运行完整评估"加载数据</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分类评估详情 -->
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <strong>🏷️ 论文分类评估</strong>
+            <button class="btn btn-sm btn-outline-primary" onclick="loadClassEval()">刷新</button>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0" id="class-table">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>学科</th>
+                            <th>精确率</th>
+                            <th>召回率</th>
+                            <th>F1</th>
+                            <th>样本数</th>
+                        </tr>
+                    </thead>
+                    <tbody id="class-tbody">
+                        <tr><td colspan="5" class="text-center text-muted">点击"运行完整评估"加载数据</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ground Truth 概览 -->
+    <div class="card">
+        <div class="card-header"><strong>📋 标注数据概览</strong></div>
+        <div class="card-body" id="gt-summary">加载中...</div>
+    </div>
+</div>
+
+<script>
+// 页面加载时获取标注数据概览
+document.addEventListener('DOMContentLoaded', () => {
+    loadGroundTruthSummary();
+});
+
+function loadGroundTruthSummary() {
+    fetch('/evaluate/api/ground-truth')
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('gt-summary').innerHTML = `
+                    <p>已标注 <strong>${data.total_papers}</strong> 篇论文，
+                    覆盖 <strong>${data.categories.length}</strong> 个学科：
+                    ${data.categories.map(c => `<span class="badge bg-secondary me-1">${c}</span>`).join('')}
+                    （版本：${data.version}）</p>
+                    <p class="text-muted small mb-0">标注数据位于 <code>data/ground_truth.json</code>，可手动编辑补充更多标注</p>
+                `;
+            }
+        })
+        .catch(e => console.error(e));
+}
+
+function runFullEvaluation() {
+    const btn = event.target;
+    btn.disabled = true;
+    btn.textContent = '⏳ 评估中...';
+
+    fetch('/evaluate/api/report')
+        .then(r => r.json())
+        .then(data => {
+            btn.disabled = false;
+            btn.textContent = '🔄 运行完整评估';
+            if (data.success) {
+                renderReport(data);
+            } else {
+                alert('评估失败：' + (data.message || '未知错误'));
+            }
+        })
+        .catch(e => {
+            btn.disabled = false;
+            btn.textContent = '🔄 运行完整评估';
+            console.error(e);
+        });
+}
+
+function renderReport(data) {
+    // 概览卡片
+    const gtCount = data.innovation?.total || 0;
+    document.getElementById('card-total').textContent = gtCount;
+
+    const rouge = data.innovation?.rouge_l?.avg;
+    document.getElementById('card-rouge').textContent = rouge ? (rouge * 100).toFixed(1) + '%' : 'N/A';
+    document.getElementById('card-rouge').className = rouge > 0.5 ? 'text-success mb-0' : rouge > 0.3 ? 'text-warning mb-0' : 'text-danger mb-0';
+
+    const kwF1 = data.keywords?.['f1@k'];
+    document.getElementById('card-kw-f1').textContent = kwF1 ? (kwF1 * 100).toFixed(1) + '%' : 'N/A';
+
+    const acc = data.classification?.accuracy;
+    document.getElementById('card-acc').textContent = acc ? (acc * 100).toFixed(1) + '%' : 'N/A';
+
+    // 综合总结
+    document.getElementById('summary-alert').classList.remove('d-none');
+    document.getElementById('summary-text').textContent = data.summary || '';
+
+    // 改进建议
+    const recs = data.recommendations || [];
+    if (recs.length) {
+        document.getElementById('recommendations-card').classList.remove('d-none');
+        const list = document.getElementById('recommendations-list');
+        list.innerHTML = recs.map(r => `<li class="list-group-item">${r}</li>`).join('');
+    }
+
+    // 创新点表格
+    const innoRows = data.innovation?.per_paper || [];
+    const innoTbody = document.getElementById('inno-tbody');
+    if (innoRows.length) {
+        innoTbody.innerHTML = innoRows.map(r => `
+            <tr>
+                <td class="small">${r.title || '论文 #' + r.paper_id}</td>
+                <td>${(r.rouge.problem * 100).toFixed(1)}%</td>
+                <td>${(r.rouge.method * 100).toFixed(1)}%</td>
+                <td>${(r.rouge.effect * 100).toFixed(1)}%</td>
+                <td><strong>${(r.avg_rouge * 100).toFixed(1)}%</strong></td>
+            </tr>
+        `).join('');
+    }
+
+    // 分类表格
+    const classData = data.classification?.per_class || {};
+    const classTbody = document.getElementById('class-tbody');
+    const classEntries = Object.entries(classData);
+    if (classEntries.length) {
+        classTbody.innerHTML = classEntries.map(([cat, m]) => `
+            <tr>
+                <td><span class="badge bg-primary">${cat}</span></td>
+                <td>${(m.precision * 100).toFixed(1)}%</td>
+                <td>${(m.recall * 100).toFixed(1)}%</td>
+                <td><strong>${(m.f1 * 100).toFixed(1)}%</strong></td>
+                <td>${m.count}</td>
+            </tr>
+        `).join('');
+    }
+}
+
+function loadInnovationEval() {
+    fetch('/evaluate/api/innovation')
+        .then(r => r.json())
+        .then(data => {
+            // api_success 扁平化了 innovation 数据，需重新嵌套以匹配 renderReport 的访问路径
+            if (data.success) renderReport({innovation: data, keywords: {}, classification: {}});
+        });
+}
+
+function loadClassEval() {
+    fetch('/evaluate/api/classification')
+        .then(r => r.json())
+        .then(data => {
+            // api_success 扁平化了 classification 数据，需重新嵌套以匹配 renderReport 的访问路径
+            if (data.success) renderReport({innovation: {}, keywords: {}, classification: data});
+        });
+}
+</script>
+{% endblock %}

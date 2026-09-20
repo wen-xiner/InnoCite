@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block title %}登录 - InnoCite{% endblock %}
+
+{% block content %}
+{% set is_register = register_mode|default(false) %}
+<div class="login-page">
+    <div class="login-card">
+        <div class="brand">
+            <div class="icon"><i class="bi bi-lightbulb-fill"></i></div>
+            <h4>InnoCite</h4>
+            <p>学术论文创新点提炼与跨学科推荐系统</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <!-- 登录/注册切换标签 -->
+        <div class="auth-tabs">
+            <a href="{{ url_for('auth.login') }}"
+               class="auth-tab {{ 'active' if not is_register else '' }}">登录</a>
+            <a href="{{ url_for('auth.register') }}"
+               class="auth-tab {{ 'active' if is_register else '' }}">注册</a>
+        </div>
+
+        {% if not is_register %}
+        <!-- ═══ 登录表单 ═══ -->
+        <form method="POST" action="{{ url_for('auth.login') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            {% if request.args.get('next') %}
+            <input type="hidden" name="next" value="{{ request.args.get('next') }}">
+            {% endif %}
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold small">用户名</label>
+                <div class="input-group">
+                    <span class="input-group-text border-end-0" style="border-radius:10px 0 0 10px;">
+                        <i class="bi bi-person"></i>
+                    </span>
+                    <input type="text" name="username" class="form-control border-start-0"
+                           placeholder="请输入用户名" required autofocus autocomplete="username">
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-semibold small">密码</label>
+                <div class="input-group">
+                    <span class="input-group-text border-end-0" style="border-radius:10px 0 0 10px;">
+                        <i class="bi bi-lock"></i>
+                    </span>
+                    <input type="password" name="password" class="form-control border-start-0"
+                           placeholder="请输入密码" required autocomplete="current-password">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-login">
+                <i class="bi bi-box-arrow-in-right"></i> 登 录
+            </button>
+        </form>
+
+        <div class="hint">
+            还没有账号？<a href="{{ url_for('auth.register') }}">立即注册</a>
+        </div>
+        {% else %}
+        <!-- ═══ 注册表单 ═══ -->
+        <form method="POST" action="{{ url_for('auth.register') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold small">用户名 <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <span class="input-group-text border-end-0" style="border-radius:10px 0 0 10px;">
+                        <i class="bi bi-person"></i>
+                    </span>
+                    <input type="text" name="username" class="form-control border-start-0"
+                           placeholder="2-50个字符" required autofocus autocomplete="username"
+                           minlength="2" maxlength="50">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold small">显示名称</label>
+                <div class="input-group">
+                    <span class="input-group-text border-end-0" style="border-radius:10px 0 0 10px;">
+                        <i class="bi bi-person-badge"></i>
+                    </span>
+                    <input type="text" name="display_name" class="form-control border-start-0"
+                           placeholder="留空则使用用户名" autocomplete="name" maxlength="50">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold small">密码 <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <span class="input-group-text border-end-0" style="border-radius:10px 0 0 10px;">
+                        <i class="bi bi-lock"></i>
+                    </span>
+                    <input type="password" name="password" class="form-control border-start-0"
+                           placeholder="至少6位密码" required autocomplete="new-password"
+                           minlength="6">
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-semibold small">确认密码 <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <span class="input-group-text border-end-0" style="border-radius:10px 0 0 10px;">
+                        <i class="bi bi-lock-fill"></i>
+                    </span>
+                    <input type="password" name="password_confirm" class="form-control border-start-0"
+                           placeholder="请再次输入密码" required autocomplete="new-password"
+                           minlength="6">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-login">
+                <i class="bi bi-person-plus"></i> 注 册
+            </button>
+        </form>
+
+        <div class="hint">
+            已有账号？<a href="{{ url_for('auth.login') }}">返回登录</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var nav = document.querySelector('.navbar');
+        var footer = document.querySelector('footer');
+        if (nav) nav.style.display = 'none';
+        if (footer) footer.style.display = 'none';
+    });
+</script>
+{% endblock %}

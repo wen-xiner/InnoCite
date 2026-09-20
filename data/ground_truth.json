@@ -1,0 +1,308 @@
+{
+  "description": "InnoCite 模型评估标注数据 — 演示用合成论文的人工标注（问题-方法-效果 / 关键词 / 学科分类）。匹配键为 arxiv_id（demo-* 格式），与 data/sample_papers.json 一一对应。",
+  "version": "2.1",
+  "created": "2026-08-18",
+  "match_key": "arxiv_id",
+  "papers": [
+    {
+      "arxiv_id": "demo-cv-001",
+      "title": "Adaptive Residual Learning for Robust Visual Recognition",
+      "problem": "深层视觉识别网络训练困难，且现有架构在复杂场景下特征选择能力不足",
+      "method": "提出自适应残差学习框架（ARL-Net），引入自门控机制动态校准通道级特征响应",
+      "effect": "大规模基准 top-5 错误率降至 5.2%，多视觉任务平均准确率提升 1.8%",
+      "keywords": [
+        "residual learning",
+        "feature recalibration",
+        "visual recognition",
+        "self-gating",
+        "deep network"
+      ],
+      "category": "cs.CV"
+    },
+    {
+      "arxiv_id": "demo-cv-002",
+      "title": "Multi-Scale Feature Aggregation for Efficient Object Detection",
+      "problem": "目标检测中多尺度特征表示难以有效应对极端尺度变化，单尺度特征上下文捕获不足",
+      "method": "提出多尺度特征聚合网络，结合类平衡损失缓解训练时的前景背景类别不平衡",
+      "effect": "公开检测基准上 mAP 达到 39.4，较强基线提升 2.6 mAP，推理延迟降低 25%",
+      "keywords": [
+        "object detection",
+        "multi-scale",
+        "feature aggregation",
+        "class-balanced loss",
+        "map"
+      ],
+      "category": "cs.CV"
+    },
+    {
+      "arxiv_id": "demo-cv-003",
+      "title": "Global-Local Attention Networks for Image Classification",
+      "problem": "卷积网络难以高效建模图像区域间的长程依赖，堆叠深层获取全局上下文计算开销大",
+      "method": "提出全局-局部注意力网络（GLANet），在同一架构中交替使用块级自注意力与空间卷积",
+      "effect": "大规模视觉基准 top-1 准确率 87.1%，超过纯卷积方案且 FLOPs 减少 30%",
+      "keywords": [
+        "image classification",
+        "self-attention",
+        "global context",
+        "convolutional network",
+        "patch"
+      ],
+      "category": "cs.CV"
+    },
+    {
+      "arxiv_id": "demo-cv-004",
+      "title": "Progressive Noise Removal for High-Fidelity Image Synthesis",
+      "problem": "生成式图像建模难以兼顾样本质量与多样性，对抗训练易模式坍缩，自回归模型高分辨率下缓慢",
+      "method": "提出渐进式去噪生成流水线，结合无分类器引导，先生成低分辨率图像再逐步超分细化",
+      "effect": "256x256 生成基准上质量分数达 6.8，超越强对抗基线，总采样成本降低 35%",
+      "keywords": [
+        "image generation",
+        "progressive denoising",
+        "generation quality",
+        "guidance",
+        "super-resolution"
+      ],
+      "category": "cs.CV"
+    },
+    {
+      "arxiv_id": "demo-cv-005",
+      "title": "Prompt-Guided Universal Segmentation Framework",
+      "problem": "图像分割系统通常面向特定任务设计，跨场景泛化能力差，缺乏统一框架支撑真实应用",
+      "method": "提出提示引导的通用分割框架，通过共享提示编码器接受点、框、草图三种交互提示",
+      "effect": "8M 图像 800M 掩码上训练，零样本迁移达到监��专用模型 93% 性能",
+      "keywords": [
+        "image segmentation",
+        "prompt",
+        "zero-shot",
+        "segmentation framework",
+        "mask"
+      ],
+      "category": "cs.CV"
+    },
+    {
+      "arxiv_id": "demo-cv-006",
+      "title": "Lightweight Cross-Modal Fusion with Shared Semantic Space",
+      "problem": "多模态学习计算成本高，跨模态表示对齐困难，缺乏配对数据时知识迁移受限",
+      "method": "设计轻量跨模态融合模块与共享语义空间，配合蒸馏调度将强视觉教师知识迁移至紧凑学生模型",
+      "effect": "模型体积减少 55%，多模态分类准确率提升 3.2%，仅用 30% 配对样本仍稳健",
+      "keywords": [
+        "multi-modal",
+        "cross-modal fusion",
+        "knowledge distillation",
+        "semantic space",
+        "lightweight"
+      ],
+      "category": "cs.CV"
+    },
+    {
+      "arxiv_id": "demo-cv-007",
+      "title": "Temporal-Aware Implicit Neural Rendering for Dynamic Scenes",
+      "problem": "隐式神经表示应用于资源受限设备上的动态场景渲染仍困难，逐帧体渲染计算开销大",
+      "method": "提出 TINeRF，采用动态哈希编码与时序特征缓存实现动态场景的轻量隐式渲染",
+      "effect": "移动 GPU 上实现 28 FPS 实时渲染，较基础隐式渲染提速 45 倍，PSNR 达 30.4 dB",
+      "keywords": [
+        "neural rendering",
+        "dynamic scenes",
+        "hash encoding",
+        "mobile",
+        "real-time"
+      ],
+      "category": "cs.CV"
+    },
+    {
+      "arxiv_id": "demo-cl-001",
+      "title": "Bidirectional Context Encoding for Deep Language Understanding",
+      "problem": "语言预训练受限于单向上下文，无法充分利用双向语境信息",
+      "method": "提出双向上下文编码器，通过掩码语言建模在全部层联合建模左右上下文",
+      "effect": "9 个语言理解基准综合得分 78.3%（绝对提升 6.5%），无需繁重任务专用架构",
+      "keywords": [
+        "pre-training",
+        "bidirectional",
+        "language understanding",
+        "masked modeling",
+        "context"
+      ],
+      "category": "cs.CL"
+    },
+    {
+      "arxiv_id": "demo-cl-002",
+      "title": "Unsupervised Multi-Task Learning via Scalable Autoregressive Pre-training",
+      "problem": "NLP 任务通常需要任务专用数据集和架构，构建跨任务泛化系统缺乏无监督信号",
+      "method": "在 6M 网络文档上训练 12 亿参数自回归 Transformer，验证大规模无监督多任务学习",
+      "effect": "8 个语言基准中 6 个取得强零样本结果，对话问答任务零训练达 52.1%",
+      "keywords": [
+        "autoregressive",
+        "unsupervised",
+        "multi-task",
+        "zero-shot",
+        "language model"
+      ],
+      "category": "cs.CL"
+    },
+    {
+      "arxiv_id": "demo-cl-003",
+      "title": "Knowledge-Enhanced Retrieval for Open-Domain Question Answering",
+      "problem": "大语言模型参数化知识难以精确访问与更新，开放域问答存在事实性错误风险",
+      "method": "提出知识增强检索生成框架，将参数化记忆与外部知识语料上的可微检索器结合",
+      "effect": "开放域问答基准 EM 41.3，事实一致性提升 11%，生成更具体且符合事实",
+      "keywords": [
+        "retrieval-augmented",
+        "open-domain",
+        "question answering",
+        "factual consistency",
+        "knowledge"
+      ],
+      "category": "cs.CL"
+    },
+    {
+      "arxiv_id": "demo-cl-004",
+      "title": "Efficient Model Adaptation with Sparse Low-Rank Updates",
+      "problem": "微调大语言模型需要更新数十亿参数，计算与显存开销令多数实践者难以承担",
+      "method": "冻结预训练权重，在注意力层注入可训练低秩分解矩阵，实现稀疏低秩适配",
+      "effect": "175B 规模模型可训练参数减少 8000 倍，多任务基准 90.2%，显存需求降低 3 倍",
+      "keywords": [
+        "parameter-efficient",
+        "low-rank",
+        "large language model",
+        "adaptation",
+        "fine-tuning"
+      ],
+      "category": "cs.CL"
+    },
+    {
+      "arxiv_id": "demo-cl-005",
+      "title": "Self-Consistent Stepwise Reasoning for Complex Mathematical Problems",
+      "problem": "大语言模型在需要多步推理的数学问题上直接预测答案常失败，缺乏中间推理能力",
+      "method": "采用逐步推理提示生成显式中间链，并结合自一致性解码采样多条链取多数答案",
+      "effect": "小学数学基准准确率 55.4%（较强微调基线提升 21 点），自一致性进一步提升至 72.8%",
+      "keywords": [
+        "chain-of-thought",
+        "mathematical reasoning",
+        "self-consistency",
+        "prompting",
+        "reasoning"
+      ],
+      "category": "cs.CL"
+    },
+    {
+      "arxiv_id": "demo-cl-006",
+      "title": "Language-Aware Expert Routing for Multilingual Neural Translation",
+      "problem": "多语种机器翻译中语言间负干扰严重，增加语言数会降低低资源语言翻译质量",
+      "method": "采用带语言感知路由的稀疏专家混合架构，为每个语言对设计专用专家模块选择性激活",
+      "effect": "低资源语言 BLEU 提升 41%，180 语言单模型平均提升 4.8 BLEU",
+      "keywords": [
+        "machine translation",
+        "mixture-of-experts",
+        "multilingual",
+        "routing",
+        "low-resource"
+      ],
+      "category": "cs.CL"
+    },
+    {
+      "arxiv_id": "demo-cl-007",
+      "title": "Progressive Reasoning Distillation for Compact Language Models",
+      "problem": "超大语言模型部署成本高，小模型缺乏大模型的推理能力，简单微调难以弥合差距",
+      "method": "采用渐进式推理蒸馏流水线，通过精选逐步推理轨迹将推理能力从大教师模型迁移至紧凑学生模型",
+      "effect": "7B 学生模型保留教师 86% 推理性能，体积小 10 倍，推理能效高 14 倍",
+      "keywords": [
+        "knowledge distillation",
+        "reasoning",
+        "compact model",
+        "distillation",
+        "small model"
+      ],
+      "category": "cs.CL"
+    },
+    {
+      "arxiv_id": "demo-ai-001",
+      "title": "Graph-Structured Message Passing for Molecular Property Prediction",
+      "problem": "分子性质预测难以同时捕获局部化学子结构与长程分子相互作用，指纹方法缺乏学习灵活性",
+      "method": "提出图消息传递框架，通过原子间迭代消息交换直接学习分子表示",
+      "effect": "15 个量子性质基准中 11 个达到最优，平均绝对误差降低 20%，泛化到未见分子",
+      "keywords": [
+        "graph neural network",
+        "molecular representation",
+        "message passing",
+        "property prediction",
+        "gnn"
+      ],
+      "category": "cs.AI"
+    },
+    {
+      "arxiv_id": "demo-ai-002",
+      "title": "Novelty-Seeking Agents for Navigation in Unseen Environments",
+      "problem": "未见环境中强化学习智能体奖励稀疏、探索效率低，标准策略在复杂 3D 任务上不足",
+      "method": "设计新奇驱动探索模块奖励发现新颖状态，结合分层控制框架提升导航探索效率",
+      "effect": "复杂未见环境导航成功率 96%，较基线探索策略提升 32%，12M 步学会多房间建图",
+      "keywords": [
+        "reinforcement learning",
+        "exploration",
+        "navigation",
+        "novelty",
+        "hierarchical"
+      ],
+      "category": "cs.AI"
+    },
+    {
+      "arxiv_id": "demo-ai-003",
+      "title": "Differentiable Constraint Learning for Scalable Causal Discovery",
+      "problem": "观测数据因果发现需搜索有向无环图组合空间，随变量数超指数增长，传统搜索耗时",
+      "method": "将结构学习表述为带可微无环约束的连续优化问题，支持基于梯度的因果发现",
+      "effect": "50+ 节点图计算从小时级降至分钟级，结构精度较组合搜索基线提升 12-25%",
+      "keywords": [
+        "causal discovery",
+        "structure learning",
+        "continuous optimization",
+        "acyclicity",
+        "differentiable"
+      ],
+      "category": "cs.AI"
+    },
+    {
+      "arxiv_id": "demo-ai-004",
+      "title": "Privacy-Preserving Collaborative Learning with Efficient Gradient Aggregation",
+      "problem": "协作学习需在保护隐私与降低通信开销之间权衡，标准聚合需大量通信轮次且可能泄露信息",
+      "method": "提出带形式化隐私保证的联邦平均框架，结合梯度压缩方案将通信开销降低 82%",
+      "effect": "精度较集中式训练差距 1.1%，提供 (ε=8, δ=1e-5) 隐私保证，支持 10000+ 客户端",
+      "keywords": [
+        "federated learning",
+        "differential privacy",
+        "gradient compression",
+        "communication",
+        "privacy"
+      ],
+      "category": "cs.AI"
+    },
+    {
+      "arxiv_id": "demo-ai-005",
+      "title": "Self-Supervised Contrastive Pretraining for Time-Series Anomaly Detection",
+      "problem": "时序异常检测面临严重类别不平衡，异常稀少多样且训练期无标注样本，监督方法不可行",
+      "method": "采用自监督对比预训练，通过区分原始信号与精心设计的增强片段学习稳健时序表示",
+      "effect": "工业控制基准 F1 达 95.2%，较最优无监督方法提升 7.6%，可迁移至新异常类型",
+      "keywords": [
+        "anomaly detection",
+        "contrastive learning",
+        "self-supervised",
+        "augmentation",
+        "representation"
+      ],
+      "category": "cs.AI"
+    },
+    {
+      "arxiv_id": "demo-ai-006",
+      "title": "Emergent Communication Protocols for Decentralized Multi-Agent Coordination",
+      "problem": "部分可观测环境下多智能体协作缺乏集中控制，联合动作空间组合爆炸导致难以规模化",
+      "method": "提出涌现通信框架，智能体与策略同步学习离散信号协议，支持 40+ 智能体协调规划",
+      "effect": "协作导航与资源分配任务完成率 91%（独立学习 58%），涌现协议具备可解释结构",
+      "keywords": [
+        "multi-agent",
+        "emergent communication",
+        "reinforcement learning",
+        "coordination",
+        "protocol"
+      ],
+      "category": "cs.AI"
+    }
+  ]
+}
